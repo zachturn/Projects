@@ -13,12 +13,10 @@ I take the data gathered from Reddit, and search the text for which champions ar
 For the network, the size of the node is proportional to the amount of times the champion was mentioned in comments. The network edges had to be filtered as well, as it was too difficult to visualize the graph if I included too many edges. The champions had to be mentioned in the same comment trees at least 11 times in order to have a connection drawn. 
 
 ## Plot.ly
-After creating the network, I fed the data into plot.ly because the static image was rather difficult to interpret. This interactive plot can be panned and zoomed to better explore the data. Also, there are dropdown menus that can be selected to display only a particular champion and its direct neighbors. The final plot can be viewed below, or at [plot.ly](https://plot.ly/~zachturn/0/lol-champion-network/#plot)
+After creating the network, I fed the data into plot.ly because the static image was rather difficult to interpret. This interactive plot can be panned and zoomed to better explore the data. Also, there are dropdown menus that can be selected to display only a particular champion and its direct neighbors. The final plot can be previewed below, but needs to be clicked to display the [interactive version](https://plot.ly/~zachturn/0/)
 
 <div>
     <a href="https://plot.ly/~zachturn/0/" target="_blank" title="LoL Champion Network" style="display: block; text-align: center;"><img src="https://plot.ly/~zachturn/0.png" alt="LoL Champion Network" style="max-width: 100%;width: 1000px;"  width="1000" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
     <script data-plotly="zachturn:0"  src="https://plot.ly/embed.js" async></script>
 </div>
-
-<iframe width="900" height="800" frameborder="0" scrolling="no" src="https://plot.ly/~zachturn/0.embed"></iframe>
 
