@@ -19,3 +19,6 @@ After creating the network, I fed the data into plot.ly because the static image
     <a href="https://plot.ly/~zachturn/0/" target="_blank" title="LoL Champion Network" style="display: block; text-align: center;"><img src="https://plot.ly/~zachturn/0.png" alt="LoL Champion Network" style="max-width: 100%;width: 1000px;"  width="1000" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
     <script data-plotly="zachturn:0"  src="https://plot.ly/embed.js" async></script>
 </div>
+
+<iframe width="900" height="800" frameborder="0" scrolling="no" src="https://plot.ly/~zachturn/0.embed"></iframe>
+
