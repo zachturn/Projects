@@ -12,6 +12,8 @@ I take the data gathered from Reddit, and search the text for which champions ar
 
 For the network, the size of the node is proportional to the amount of times the champion was mentioned in comments. The network edges had to be filtered as well, as it was too difficult to visualize the graph if I included too many edges. The champions had to be mentioned in the same comment trees at least 11 times in order to have a connection drawn. 
 
+<img src="static_nx.png" height="750" width="750"/>
+
 ## Plot.ly
 After creating the network, I fed the data into plot.ly because the static image was rather difficult to interpret. This interactive plot can be panned and zoomed to better explore the data. Also, there are dropdown menus that can be selected to display only a particular champion and its direct neighbors. The final plot can be previewed below, but needs to be clicked to display the [interactive version](https://plot.ly/~zachturn/0/)
 
