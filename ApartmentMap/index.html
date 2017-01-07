@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<style>
+    #map-canvas {
+        width: 600px;
+        height: 600px;
+    }
+</style>
+</head>    
+
+<body onLoad="initMap()">
+<div id="map-canvas"></div>
+<select id="Neighborhood" onchange="filterNeighborhood(this.value)">
+    <option value="">Neighborhood</option>
+    <option value="Lincoln Park">Lincoln Park</option>
+    <option value="Lakeview">Lakeview</option>
+    <option value="Roscoe Village">Roscoe Village</option>
+</select>
+<select id="Price" onchange="filterPrice(this.value)">
+    <option value=1000>Max Price</option>
+    <option value=700>$700</option>
+    <option value=800>$800</option>
+    <option value=1000>$800+</option>
+</select>
+
+
+<! Connect to API>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDrnDZyBpObyAOWaZuqzq1DUEZBJNzAu-8"></script>
+
+<! Get data from Sheet>
+<script src="https://apis.google.com/js/api.js"></script>
+<script>
+
+var rows = [];
+function start() {
+  
+  // 2. Initialize the JavaScript client library.
+  gapi.client.init({
+    'apiKey': 'AIzaSyDrnDZyBpObyAOWaZuqzq1DUEZBJNzAu-8',
+    // clientId and scope are optional if auth is not required.
+    'clientId': '743372987679-n3a809hjko7gegvf4g4d5q8gdfs052oq.apps.googleusercontent.com',
+    'scope': 'profile',
+  }).then(function() {
+      return gapi.client.request({
+      'path': 'https://sheets.googleapis.com/v4/spreadsheets/1KsEEqEIaCzLXmGmUX2kQfJ6oW3k2n2-mc0dCiq7GzTU/values/Sheet3'
+      });
+    }).then(function(response){
+      rows = response;
+      onResultsSuccess(response);
+  });
+};
+// 1. Load the JavaScript client library.
+gapi.load('client', start);
+
+function onResultsSuccess(data){
+    console.log(data.result);
+};
+
+var markers = [];
+var gmarkers = [];
+    
+var infowindow = new google.maps.InfoWindow({
+        content: ''
+});
+    
+setTimeout(function(){
+    markers = rows['result']['values'];
+},5000);
+
+
+function initMap() {
+    var center = new google.maps.LatLng(41.925136,-87.648618);
+    var mapOptions = {
+        zoom: 14,
+        center: center,
+        mapTypeId: google.maps.MapTypeId.TERRAIN
+    };
+
+    map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+    for (i = 1; i < markers.length; i++) {
+        addMarker(markers[i]);
+    }
+};
+    
+function addMarker(marker) {
+    var address = marker[0];
+    var neighborhood = marker[10];
+    var pos = new google.maps.LatLng(Number(marker[2]), Number(marker[3]));
+    var url = marker[1];
+    var bathrooms = marker[4];
+    var laundry = marker[5];
+    var sqft = marker[6];
+    var price = Number(marker[7]);
+    var parking = marker[8];
+    var heat = marker[9];
+    
+    var note = "<b>"+address+"</b>" + "<br>" + 
+        "$" + price + "<br>" +
+        "Sq. Ft: " + sqft + "<br>" +
+        "Bathrooms: " + bathrooms + "<br>" +
+        "Laundry: " + laundry + "<br>" +
+        "Parking: " + parking + "<br>" +
+        "Heat: " + heat + "<br>" +
+        'URL: ' + url;
+    
+
+    marker1 = new google.maps.Marker({
+        title: address,
+        position: pos,
+        neighborhood: neighborhood,
+        price: price,
+        map: map
+    });
+    
+    gmarkers.push(marker1);
+
+    // Marker click listener
+    google.maps.event.addListener(marker1, 'click', (function (marker1, content) {
+        return function () {
+            infowindow.setContent(content);
+            infowindow.open(map, marker1);
+            map.panTo(this.getPosition());
+            map.setZoom(15);
+        }
+    })(marker1, note));
+};
+    
+setTimeout(initMap,5001);    
+/**
+ * Function to filter markers by category
+ */
+
+filterNeighborhood = function (category) {
+    for (i = 0; i < gmarkers.length; i++) {
+        marker = gmarkers[i];
+        // If is same category or category not picked
+        if ((marker.neighborhood == category || category.length === 0) & marker.getVisible()) {
+            marker.setVisible(true);
+        }
+        // Categories don't match 
+        else {
+            marker.setVisible(false);
+        }
+    }
+};
+    
+filterPrice = function(category){
+    for (i=0;i < gmarkers.length;i++){
+        marker = gmarkers[i];
+        // If price is less than max value, display
+        if (marker.price <= category & marker.getVisible()){
+            marker.setVisible(true);
+        }
+        else {
+            marker.setVisible(false);
+        }
+    }
+};
+</script>
+</body>
+</html>
