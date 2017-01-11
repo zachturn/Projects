@@ -25,6 +25,14 @@
     <option value=800>$800</option>
     <option value=1000>$800+</option>
 </select>
+<select id="JoeCommute" onchange="filterJoe(this.value)">
+    <option value=50>Joe's Commute</option>
+    <option value=25>25</option>
+    <option value=30>30</option>
+    <option value=35>35</option>
+    <option value=40>40</option>
+    <option value=50>40+</option>
+</select>
 
 
 <! Connect to API>
@@ -96,6 +104,7 @@ function addMarker(marker) {
     var price = Number(marker[7]);
     var parking = marker[8];
     var heat = marker[9];
+    var joe_commute = Number(marker[11]);
     
     var note = "<b>"+address+"</b>" + "<br>" + 
         "$" + price + "<br>" +
@@ -112,7 +121,8 @@ function addMarker(marker) {
         position: pos,
         neighborhood: neighborhood,
         price: price,
-        map: map
+        map: map,
+        joe_commute: joe_commute
     });
     
     gmarkers.push(marker1);
@@ -137,7 +147,7 @@ filterNeighborhood = function (category) {
     for (i = 0; i < gmarkers.length; i++) {
         marker = gmarkers[i];
         // If is same category or category not picked
-        if ((marker.neighborhood == category || category.length === 0) & marker.getVisible()) {
+        if (marker.neighborhood == category || category.length === 0) {
             marker.setVisible(true);
         }
         // Categories don't match 
@@ -151,7 +161,19 @@ filterPrice = function(category){
     for (i=0;i < gmarkers.length;i++){
         marker = gmarkers[i];
         // If price is less than max value, display
-        if (marker.price <= category & marker.getVisible()){
+        if (marker.price <= category){
+            marker.setVisible(true);
+        }
+        else {
+            marker.setVisible(false);
+        }
+    }
+};
+    
+filterJoe = function(category){
+    for (i=0; i < gmarkers.length; i++){
+        marker = gmarkers[i];
+        if (marker.joe_commute <= category){
             marker.setVisible(true);
         }
         else {
